@@ -288,12 +288,25 @@ body.theme-v1 .result-animate {
 }
 
 /* ---- 页脚 ---- */
-body.theme-v1 .footer-copyright {
-  font-family: inherit;
-  font-size: 0.78rem;
-  letter-spacing: 0.03em;
+body.theme-v1 .site-footer {
   color: #98a6c4;
-  text-shadow: none;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 0.82rem;
+}
+
+body.theme-v1 .footer-meta {
+  border-color: rgba(89, 210, 255, 0.2);
+  background: rgba(18, 28, 52, 0.68);
+  box-shadow: 0 14px 40px rgba(7, 12, 30, 0.3);
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+body.theme-v1 .footer-meta a {
+  color: #86c9c8;
+}
+
+body.theme-v1 .footer-meta a:focus-visible {
+  outline-color: #86c9c8;
 }
 
 /* ---- 错误提示 ---- */

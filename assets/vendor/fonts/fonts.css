@@ -1,0 +1,22 @@
+@font-face {
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./PressStart2P-Regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'VT323';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./VT323-Regular.ttf) format('truetype');
+}
+/* 中文像素字体 Cubic 11（覆盖简体中文） */
+@font-face {
+  font-family: 'Cubic 11';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./Cubic_11.woff2) format('woff2');
+}

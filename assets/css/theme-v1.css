@@ -1,0 +1,345 @@
+/* ============================================================
+   V1 - 玻璃拟态（Glassmorphism）风格
+   仅当 <body> 带有 .theme-v1 时生效（与 V2 像素风互斥）
+   ============================================================ */
+
+/* ---- V1 字体 ---- */
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../vendor/fonts/v1/ibm-plex-400.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(../vendor/fonts/v1/ibm-plex-600.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(../vendor/fonts/v1/ibm-plex-700.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(../vendor/fonts/v1/space-grotesk-500.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(../vendor/fonts/v1/space-grotesk-700.woff2) format('woff2');
+}
+
+/* ---- 基础 ---- */
+body.theme-v1 {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  color: #eaf6ff;
+  background: radial-gradient(1200px 800px at 15% 10%, #1e2a4d 0%, transparent 55%),
+    radial-gradient(900px 600px at 85% 20%, #27315b 0%, transparent 45%),
+    linear-gradient(160deg, #0b1020, #111b34);
+  background-attachment: fixed;
+}
+
+/* 隐藏 V2 的地形背景画布 */
+body.theme-v1 #terrain-bg {
+  display: none;
+}
+
+body.theme-v1 h1,
+body.theme-v1 h2,
+body.theme-v1 h3,
+body.theme-v1 h4,
+body.theme-v1 h5,
+body.theme-v1 h6 {
+  color: #f1faff;
+  font-family: "Space Grotesk", sans-serif;
+  letter-spacing: 0.3px;
+}
+
+/* ---- Hero ---- */
+body.theme-v1 .hero-title {
+  font-family: "Space Grotesk", sans-serif;
+  letter-spacing: 0.5px;
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  line-height: 1.2;
+  color: #f4fbff;
+  text-shadow: 0 0 22px rgba(89, 210, 255, 0.3);
+  white-space: normal;
+}
+
+body.theme-v1 .uk-text-uppercase {
+  font-family: inherit;
+  font-size: 0.8rem;
+  color: #a7b4c8 !important;
+  text-shadow: none;
+}
+
+body.theme-v1 .uk-text-lead {
+  color: #cdd9f6 !important;
+  font-size: 1.1rem;
+}
+
+/* ---- 面板（玻璃拟态） ---- */
+body.theme-v1 .panel {
+  background: rgba(18, 28, 52, 0.78);
+  border: 1px solid rgba(89, 210, 255, 0.2);
+  box-shadow: 0 18px 60px rgba(7, 12, 30, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 18px;
+}
+
+body.theme-v1 .panel::before,
+body.theme-v1 .panel::after {
+  display: none;
+}
+
+/* 主卡片涟漪（脉动光圈，对应原版 .pulse） */
+body.theme-v1 #formCard {
+  position: relative;
+}
+body.theme-v1 #formCard::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  width: auto;
+  height: auto;
+  background: none;
+  border-radius: 24px;
+  border: 1px solid rgba(89, 210, 255, 0.35);
+  opacity: 0;
+  display: block;
+  animation: v1Ripple 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+body.theme-v1 #formCard > * {
+  position: relative;
+  z-index: 1;
+}
+@keyframes v1Ripple {
+  0% { transform: scale(0.98); opacity: 0; }
+  40% { opacity: 0.55; }
+  100% { transform: scale(1.05); opacity: 0; }
+}
+
+/* ---- 表单 ---- */
+body.theme-v1 .uk-form-label {
+  color: #dbe6ff;
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 0.9rem;
+  letter-spacing: normal;
+  margin-bottom: 6px !important;
+}
+
+body.theme-v1 .uk-input,
+body.theme-v1 .uk-select {
+  color: #0c1020;
+  font-family: inherit;
+  font-size: 1rem;
+  background: #ffffff;
+  border-radius: 12px !important;
+  border: 1px solid rgba(89, 210, 255, 0.35);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  height: 48px;
+  min-height: 48px;
+  padding: 8px 14px;
+}
+
+body.theme-v1 .uk-input::placeholder {
+  color: #7b879a;
+}
+
+/* ---- 按钮（恢复 UIkit 圆角风格） ---- */
+body.theme-v1 .pixel-btn {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px !important;
+  box-shadow: none;
+  text-shadow: none;
+  padding: 12px 28px;
+  line-height: 1.5;
+}
+
+body.theme-v1 .pixel-btn:hover {
+  background: #f5f5f5;
+}
+
+body.theme-v1 .pixel-btn:active {
+  transform: none;
+  box-shadow: none;
+}
+
+body.theme-v1 .pixel-btn-primary {
+  background: #1e87f0;
+  border-color: #1e87f0;
+  color: #fff;
+}
+
+body.theme-v1 .pixel-btn-primary:hover {
+  background: #0f7ae5;
+}
+
+/* ---- 结果区 ---- */
+body.theme-v1 .stat-chip {
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #a7b4c8;
+  background: transparent;
+  border: 1px solid rgba(89, 210, 255, 0.25);
+  border-radius: 999px;
+  padding: 6px 14px;
+  box-shadow: none;
+  display: inline-block;
+}
+
+body.theme-v1 .motd-box {
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.6;
+  background: rgba(9, 14, 30, 0.7);
+  border-radius: 12px;
+  padding: 14px 16px;
+  border: 1px dashed rgba(255, 159, 90, 0.5);
+}
+
+body.theme-v1 #result h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.5rem;
+  color: #f1faff;
+}
+
+body.theme-v1 #result .uk-text-large {
+  font-size: 1.25rem;
+}
+
+body.theme-v1 .accent {
+  color: #ff9f5a;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* ---- 卡片 ---- */
+body.theme-v1 .panel.fade-in {
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+body.theme-v1 .panel.fade-in:hover {
+  transform: translateY(-4px);
+  border-color: rgba(89, 210, 255, 0.45);
+  box-shadow: 0 24px 70px rgba(7, 12, 30, 0.55);
+}
+
+body.theme-v1 .panel.fade-in h4 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.1rem;
+  color: #f1faff;
+  letter-spacing: 0.3px;
+}
+
+body.theme-v1 .panel.fade-in p {
+  font-size: 0.95rem;
+  color: #a7b4c8;
+}
+
+/* ---- 动画（V1 原版：1.2s 平滑上浮 + 错落延迟） ---- */
+body.theme-v1 .panel.fade-in {
+  animation: v1Float 1.2s ease both;
+}
+@keyframes v1Float {
+  0% { opacity: 0; transform: translateY(14px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+body.theme-v1.page-enter .hero-enter {
+  animation: v1Hero 1.2s ease both;
+}
+@keyframes v1Hero {
+  0% { opacity: 0; transform: translateY(18px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 主卡片（表单面板）与结果面板入场 */
+body.theme-v1.page-enter > .uk-container > section > .panel:not(.fade-in) {
+  animation: v1Float 1.2s ease both;
+}
+
+body.theme-v1 .result-animate {
+  animation: v1Slide 0.5s ease both;
+}
+@keyframes v1Slide {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- 页脚 ---- */
+body.theme-v1 .footer-copyright {
+  font-family: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  color: #98a6c4;
+  text-shadow: none;
+}
+
+/* ---- 错误提示 ---- */
+body.theme-v1 .uk-alert-danger {
+  background: #ffd9d9 !important;
+  border: 1px solid #f1a1a1 !important;
+  border-radius: 12px !important;
+  color: #7d2c2c !important;
+  box-shadow: none !important;
+}
+
+/* ---- 版本切换按钮（V1 玻璃拟态） ---- */
+body.theme-v1 .theme-toggle {
+  border: 1px solid rgba(89, 210, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(7, 12, 30, 0.4);
+  background: rgba(18, 28, 52, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+body.theme-v1 .theme-toggle .theme-btn {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #a7b4c8;
+  background: transparent;
+  padding: 6px 16px;
+  border: none;
+}
+
+body.theme-v1 .theme-toggle .theme-btn:first-child {
+  border-right: 1px solid rgba(89, 210, 255, 0.25);
+}
+
+body.theme-v1 .theme-toggle .theme-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+body.theme-v1 .theme-toggle .theme-btn.active {
+  background: rgba(89, 210, 255, 0.15);
+  color: #59d2ff;
+}
+
+body.theme-v1 .theme-toggle .theme-btn.active:hover {
+  background: rgba(89, 210, 255, 0.22);
+}

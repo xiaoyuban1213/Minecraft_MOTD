@@ -1,0 +1,440 @@
+/* ============================================================
+   Minecraft 像素风 - MOTD Scanner
+   保留全部基础功能与 DOM 结构，仅更换视觉样式
+   ============================================================ */
+
+:root {
+  --pixel-bg: #141414;
+  --panel-bg: #1f1f1f;
+  --stone-light: #a8a8a8;
+  --stone-mid: #6f6f6f;
+  --stone-dark: #3c3c3c;
+  --stone-darker: #2a2a2a;
+  --grass: #7cbd4f;
+  --grass-dark: #5d9c3f;
+  --grass-deep: #3f7a28;
+  --dirt: #8b5a2b;
+  --dirt-dark: #5b3d20;
+  --oak: #c9a86b;
+  --gold: #f0c33c;
+  --text: #ffffff;
+  --text-dim: #c9c9c9;
+  --red: #e05050;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  image-rendering: pixelated;
+}
+
+body {
+  position: relative;
+  font-family: "VT323", "Cubic 11", sans-serif;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--text);
+  background-color: #1a1a2e;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* ---- 随机生成的地形剖面背景（跟随页面滚动） ---- */
+#terrain-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+/* 内容置于背景之上 */
+.uk-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- 版本切换按钮（右上角，V2 像素风） ---- */
+.theme-toggle {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  z-index: 1000;
+  display: flex;
+  border: 3px solid var(--stone-mid);
+  box-shadow: 0 4px 0 var(--stone-darker);
+  background: var(--panel-bg);
+}
+
+.theme-toggle .theme-btn {
+  font-family: "Press Start 2P", "Cubic 11", sans-serif;
+  font-size: 11px;
+  color: var(--text-dim);
+  background: var(--stone-dark);
+  border: none;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: none;
+}
+
+.theme-toggle .theme-btn:first-child {
+  border-right: 2px solid var(--stone-mid);
+}
+
+.theme-toggle .theme-btn:hover {
+  background: #7f7f7f;
+  color: #fff;
+}
+
+.theme-toggle .theme-btn.active {
+  background: var(--grass);
+  color: #fff;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.theme-toggle .theme-btn.active:hover {
+  background: #8fce60;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Press Start 2P", "Cubic 11", sans-serif;
+  color: var(--text);
+  letter-spacing: 1px;
+}
+
+/* ---- 主容器 ---- */
+.uk-container {
+  padding-top: 56px !important;
+  padding-bottom: 40px !important;
+}
+
+/* ---- Hero ---- */
+.hero-enter {
+  padding-top: 8px;
+}
+.hero-title {
+  font-family: "Press Start 2P", "Cubic 11", sans-serif;
+  font-size: clamp(1.4rem, 2.4vw, 2.2rem);
+  line-height: 1.5;
+  white-space: nowrap;
+  color: var(--grass);
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.6),
+    6px 6px 0 rgba(0, 0, 0, 0.35);
+}
+
+.uk-text-uppercase {
+  font-family: "Press Start 2P", sans-serif;
+  font-size: 12px;
+  color: var(--gold) !important;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+}
+
+.uk-text-lead {
+  color: #e8e8e8 !important;
+  font-size: 22px;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* ---- 像素方块面板（Minecraft GUI 样式） ---- */
+.panel {
+  position: relative;
+  background: var(--panel-bg);
+  border: 3px solid var(--stone-light);
+  box-shadow:
+    inset 3px 3px 0 rgba(255, 255, 255, 0.08),
+    inset -3px -3px 0 rgba(0, 0, 0, 0.5),
+    0 6px 0 #000;
+}
+
+.panel::before,
+.panel::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+/* 角部像素装饰 */
+.panel::before {
+  top: -9px;
+  left: -9px;
+  width: 18px;
+  height: 18px;
+  background:
+    linear-gradient(135deg, var(--gold) 50%, transparent 50%);
+  opacity: 0.9;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+.panel::after {
+  bottom: -9px;
+  right: -9px;
+  width: 18px;
+  height: 18px;
+  background:
+    linear-gradient(-45deg, var(--gold) 50%, transparent 50%);
+  opacity: 0.9;
+  box-shadow: -3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* ---- 表单 ---- */
+.uk-form-label {
+  font-family: "Press Start 2P", "Cubic 11", sans-serif;
+  font-size: 11px;
+  color: var(--grass);
+  margin-bottom: 8px !important;
+  display: block;
+}
+
+.uk-input,
+.uk-select {
+  font-family: "VT323", "Cubic 11", sans-serif;
+  font-size: 19px;
+  color: var(--text);
+  background: #0f0f0f;
+  border: 3px solid var(--stone-mid);
+  border-radius: 0 !important;
+  box-shadow:
+    inset 2px 2px 0 rgba(0, 0, 0, 0.6),
+    inset -2px -2px 0 rgba(255, 255, 255, 0.06);
+  padding: 8px 14px;
+}
+
+/* 覆盖 UIkit uk-form-large 的过高尺寸 */
+.uk-input.uk-form-large,
+.uk-select.uk-form-large {
+  height: 46px !important;
+  min-height: 46px !important;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+.uk-input:focus,
+.uk-select:focus {
+  border-color: var(--grass);
+  outline: none;
+  box-shadow:
+    inset 2px 2px 0 rgba(0, 0, 0, 0.6),
+    0 0 0 2px rgba(124, 189, 79, 0.4);
+}
+
+.uk-input::placeholder {
+  color: #5a5a5a;
+}
+
+/* ---- 像素按钮（Minecraft 风格） ---- */
+.pixel-btn {
+  position: relative;
+  font-family: "Press Start 2P", "Cubic 11", sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #fff;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+  background: var(--stone-mid);
+  border: 3px solid;
+  border-color: var(--stone-light) var(--stone-dark) var(--stone-dark) var(--stone-light);
+  border-radius: 0 !important;
+  box-shadow: 0 5px 0 var(--stone-darker);
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: none;
+  image-rendering: pixelated;
+}
+
+.pixel-btn:hover {
+  background: #7f7f7f;
+}
+
+.pixel-btn:active {
+  transform: translateY(5px);
+  box-shadow: 0 0 0 var(--stone-darker);
+}
+
+.pixel-btn:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.pixel-btn-primary {
+  background: var(--grass);
+  border-color: #a5e07d var(--grass-deep) var(--grass-deep) #a5e07d;
+  box-shadow: 0 5px 0 var(--grass-deep);
+}
+
+.pixel-btn-primary:hover {
+  background: #8fce60;
+}
+
+.pixel-btn-primary:active {
+  box-shadow: 0 0 0 var(--grass-deep);
+}
+
+.btn-spinner {
+  display: none;
+  margin-left: 12px;
+  vertical-align: middle;
+}
+
+.pixel-btn.is-loading {
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.pixel-btn.is-loading .btn-spinner {
+  display: inline-flex;
+}
+
+.pixel-btn.is-loading .btn-text {
+  opacity: 0.9;
+}
+
+/* ---- 结果区块 ---- */
+.stat-chip {
+  display: inline-block;
+  font-family: "Press Start 2P", "Cubic 11", sans-serif;
+  font-size: 11px;
+  color: var(--gold);
+  background: #0f0f0f;
+  border: 2px solid var(--stone-mid);
+  padding: 5px 12px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+.motd-box {
+  white-space: pre-wrap;
+  font-family: "VT323", "Cubic 11", monospace;
+  font-size: 21px;
+  line-height: 1.5;
+  color: var(--text);
+  background: #0f0f0f;
+  border: 3px solid var(--dirt);
+  border-style: solid dashed solid dashed;
+  padding: 12px 16px;
+  box-shadow:
+    inset 2px 2px 0 rgba(0, 0, 0, 0.5),
+    3px 3px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* 结果面板内部统一尺寸 */
+#result h3 {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+#result .uk-text-large {
+  font-size: 21px;
+  line-height: 1.35;
+}
+
+#result .accent {
+  font-size: 19px;
+}
+
+.accent {
+  color: var(--grass);
+  font-weight: bold;
+}
+
+/* ---- 错误提示 ---- */
+.uk-alert-danger {
+  background: #3a1414 !important;
+  border: 3px solid var(--red) !important;
+  border-radius: 0 !important;
+  color: #ffb0b0 !important;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5) !important;
+}
+
+/* ---- 页脚 ---- */
+.footer-copyright {
+  font-family: "Press Start 2P", "Cubic 11", sans-serif;
+  font-size: 10px;
+  color: #9a9a9a;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+}
+
+/* ---- 动画 ---- */
+
+/* 卡片入场（平滑错落，覆盖 page-enter 冲突） */
+.panel.fade-in {
+  animation: cardIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 卡片悬浮效果 */
+.panel.fade-in {
+  transition:
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* 卡片内部尺寸 */
+.panel.fade-in h4 {
+  font-size: 13px;
+  letter-spacing: 1px;
+  line-height: 1.6;
+}
+
+.panel.fade-in p {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.panel.fade-in:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold);
+  box-shadow:
+    inset 3px 3px 0 rgba(255, 255, 255, 0.08),
+    inset -3px -3px 0 rgba(0, 0, 0, 0.5),
+    0 10px 0 #000,
+    0 14px 18px rgba(0, 0, 0, 0.45);
+}
+
+/* 结果区入场 */
+.result-animate {
+  animation: slideIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- 入场动画 ---- */
+.page-enter .hero-enter {
+  animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.page-enter > .uk-container > section > .panel:not(.fade-in) {
+  animation: floatIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- 响应式微调 ---- */
+@media (max-width: 640px) {
+  body { font-size: 18px; }
+  .pixel-btn { font-size: 11px; padding: 10px 18px; }
+  .motd-box { font-size: 20px; }
+}

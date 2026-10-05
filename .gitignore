@@ -1,0 +1,28 @@
+# Local tools and sensitive/private implementation
+/noapi/
+/.vscode/
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.*
+credentials.*
+
+# Logs, archives, and generated output
+*.log
+*.zip
+/logs/
+/dist/
+/build/
+
+# OS/editor artifacts
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
